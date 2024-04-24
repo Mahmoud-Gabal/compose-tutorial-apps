@@ -10,6 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.reduce
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class flowViewModel() : ViewModel(){
@@ -37,7 +39,7 @@ class flowViewModel() : ViewModel(){
             current --
             emit(current)
         }
-    }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),10)
 //    MutableStaeFlow is used for one event Change
     private val _countState = MutableStateFlow(0)
     val countState = _countState.asStateFlow()
